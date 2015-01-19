@@ -33,7 +33,7 @@ public class PebbleDataReceiver extends PebbleKit.PebbleDataReceiver {
         if (actionId != null) {
             if(actionId == PebbleAndroidBridgeDict.ACTION_START_CAPTURE_VOICE_MSG) {
                 Log.d(PEBBLE_DATA_RECEIVED_DEBUG, "Starting voice capture");
-                SpeechReconManager.getInstance(context).startListening();
+                SpeechReconManager.getInstance(context).startListening(context);
             } else if(actionId == PebbleAndroidBridgeDict.ACTION_STOP_CAPTURE_VOICE_MSG) {
                 Log.d(PEBBLE_DATA_RECEIVED_DEBUG, "Stopping voice capture");
                 SpeechReconManager.getInstance(context).stopListening();

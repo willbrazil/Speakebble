@@ -2,6 +2,7 @@ package com.speakebble;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.speech.RecognitionListener;
 import android.speech.SpeechRecognizer;
@@ -22,6 +23,7 @@ public class SpeechReconManager {
 
     private static SpeechReconManager instance;
     private SpeechRecognizer speechRecognizer;
+    private AudioManager audioManager;
 
     private SpeechReconManager(Context context) {
         // Uses application context. This will prevent app from holding reference to activity context
@@ -37,13 +39,26 @@ public class SpeechReconManager {
         return instance;
     }
 
-    public void startListening() {
+    public void startListening(Context context) {
+        audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+
+        audioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
+        audioManager.setStreamMute(AudioManager.STREAM_MUSIC, true);
+        audioManager.startBluetoothSco();
+        audioManager.setBluetoothScoOn(true);
+
+
         speechRecognizer.startListening(new Intent());
     }
 
     public void stopListening() {
         speechRecognizer.stopListening();
+
+        audioManager.stopBluetoothSco();
+        audioManager.setBluetoothScoOn(false);
+        //audioManager.setStreamMute(AudioManager.STREAM_MUSIC, false);
     }
+
 
     private class SpeechReconListener implements RecognitionListener {
 
